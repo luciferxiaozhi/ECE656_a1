@@ -58,17 +58,23 @@ having count(Assigned.projID)>1
 ### Part1.3
 /* Part1.3.(a) tick*/
 update Employee set salary = salary * 1.10;
-/* Part1.3.(a) tick*/
+/* Part1.3.(b) tick*/
 update Employee, Department
     set Employee.salary = 
     case when Employee.job = 'janitor' and Department.location != 'Waterloo' then Employee.salary * 1.05
     when Department.location = 'Waterloo' then Employee.salary * 1.08
     else Employee.salary end
     where Employee.deptID = Department.deptID;
-
-
-
-
+/* Part1.3.(c) tick*/
+update Department
+    set Department.location = 'Waterloo'
+    where Department.location = 'Kitchener';
+delete from Employee
+    where not exists (select *
+        from Assigned as a
+        where a.empID = Employee.empID);
+delete from Department
+    where location = 'Kitchener';
 
 
 
