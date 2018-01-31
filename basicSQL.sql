@@ -2,7 +2,7 @@
 ## Part1
 ### Part1.1
 /* Part1.1.(a) tick*/
-SELECT distinct deptName FROM Department where location = 'waterloo';
+SELECT distinct deptName FROM Department where location = 'Waterloo';
 /* Part1.1.(b) tick*/
 SELECT job, COUNT(empName) FROM Employee group by job;
 /* Part1.1.(c) tick*/
@@ -59,7 +59,12 @@ having count(Assigned.projID)>1
 /* Part1.3.(a) tick*/
 update Employee set salary = salary * 1.10;
 /* Part1.3.(a) tick*/
-
+update Employee, Department
+    set Employee.salary = 
+    case when Employee.job = 'janitor' and Department.location != 'Waterloo' then Employee.salary * 1.05
+    when Department.location = 'Waterloo' then Employee.salary * 1.08
+    else Employee.salary end
+    where Employee.deptID = Department.deptID;
 
 
 
