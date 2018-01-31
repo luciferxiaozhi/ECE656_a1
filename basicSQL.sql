@@ -56,6 +56,14 @@ group by Employee.empName, Employee.empID
 having count(Assigned.projID)>1
 #____________________________________________________________________________
 ### Part1.3
+/* Part1.3.(a) tick*/
+update Employee set salary = salary * 1.10;
+/* Part1.3.(a) tick*/
+
+
+
+
+
 
 
 
