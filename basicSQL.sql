@@ -75,19 +75,3 @@ delete from Employee
         where a.empID = Employee.empID);
 delete from Department
     where location = 'Kitchener';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
