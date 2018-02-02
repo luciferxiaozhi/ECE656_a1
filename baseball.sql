@@ -8,17 +8,17 @@ select
     (
         select count(distinct HallOfFame.playerID) from Master inner join HallOfFame
         where HallOfFame.playerID = Master.playerID and
-        Master.deathYear is not NULL and
-        Master.deathMonth is not NULL and
-        Master.deathDay is not NULL
-    ) 
+        Master.deathYear is NULL and
+        Master.deathMonth is NULL and
+        Master.deathDay is NULL
+    )
     - 
     (
         select count(distinct HallOfFame.playerID) from Master inner join HallOfFame
         where HallOfFame.playerID = Master.playerID and
-        Master.deathYear is NULL and
-        Master.deathMonth is NULL and
-        Master.deathDay is NULL
+        Master.deathYear is not NULL and
+        Master.deathMonth is not NULL and
+        Master.deathDay is not NULL
     ) as res;
 /*Part2.1.(c)*/
 select Salaries.salary, nameFirst, nameLast, nameGiven from Master inner join Salaries
@@ -67,26 +67,32 @@ where avgBat.HR >
     )
 );
 
+/*Part2.2*/
+DROP TABLE IF EXISTS Fielding;
 
-select count(gb.playerID) as good
-from (select avg(b.HR) as HR, b.playerID
-    from Batting as b group by b.playerID) as gb
-where gb.HR > (select sum(tempb.HR)/count(tempb.playerID)
-    from (select sum(t.HR) as HR, t.playerID
-        from Batting as t
-        group by t.playerID)
-    as tempb)
-and gb.playerID in (select gp.playerID
-    from (select avg(p.SHO) as SHO, p.playerID
-        from Pitching as p
-        group by p.playerID) as gp
-    where gp.SHO > (select sum(tempp.SHO)/count(tempp.playerID)
-        from (select sum(s.SHO) as SHO, s.playerID
-            from Pitching as s
-            group by s.playerID) as tempp));
+CREATE TABLE Fielding (
+    playerID VARCHAR(9),
+    yearID INTEGER,
+    stint INTEGER,
+    teamID VARCHAR(3),
+    lgID VARCHAR(2),
+    POS VARCHAR(2),
+    G INTEGER,
+    GS INTEGER,
+    InnOuts INTEGER,
+    PO INTEGER,
+    A INTEGER,
+    E INTEGER,
+    DP INTEGER,
+    PB INTEGER,
+    WP INTEGER,
+    SB INTEGER,
+    CS INTEGER,
+    ZR DOUBLE,
+    PRIMARY KEY ( playerID, yearID, stint, POS )
+) CHARACTER SET 'UTF8';
 
-
-
+LOAD DATA LOCAL INFILE '/home/luciferxiaozhi/workspace/ECE656/A1/Fielding.csv' INTO TABLE Fielding FIELDS TERMINATED BY ',';
 
 
 
