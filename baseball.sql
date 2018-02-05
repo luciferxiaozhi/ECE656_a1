@@ -6,17 +6,18 @@ where birthYear is NULL or birthMonth is NULL or birthDay is NULL;
 /*Part2.1.(b)*/
 select 
     (
+
         select count(distinct HallOfFame.playerID) from Master inner join HallOfFame
         where HallOfFame.playerID = Master.playerID and
         Master.deathYear is NULL and
         Master.deathMonth is NULL and
         Master.deathDay is NULL
-    )
+    ) 
     - 
     (
         select count(distinct HallOfFame.playerID) from Master inner join HallOfFame
         where HallOfFame.playerID = Master.playerID and
-        Master.deathYear is not NULL and
+        Master.deathYear is not NULL and 
         Master.deathMonth is not NULL and
         Master.deathDay is not NULL
     ) as res;
@@ -40,7 +41,7 @@ from
 /*Part2.1.(f)*/
 select count(avgBat.playerID) from
 (
-    select b.playerID, avg(b.HR) as HR
+    select b.playerID, sum(b.HR) as HR
     from Batting as b group by b.playerID
 ) as avgBat
 where avgBat.HR > 
@@ -48,13 +49,13 @@ where avgBat.HR >
     select sum(tmpb.HR)/count(tmpb.playerID)
     from 
     (
-      select sum(tb.HR) as HR, tb.playerID from Batting as tb group by tb.playerID
+      select sum(tb.HR) as HR, tb.playerID from Batting as tb group by tb.playerID having HR >0
     ) as tmpb
 )and avgBat.playerID in
 (
     select avgPit.playerID from 
     (
-        select p.playerID, avg(p.SHO) as SHO from Pitching as p
+        select p.playerID, sum(p.SHO) as SHO from Pitching as p
         group by p.playerID
     ) as avgPit
     where avgPit.SHO > 
@@ -62,7 +63,7 @@ where avgBat.HR >
         select sum(tmpp.SHO)/count(tmpp.playerID)
         from 
         (
-          select sum(tp.SHO) as SHO, tp.playerID from Pitching as tp group by tp.playerID
+          select sum(tp.SHO) as SHO, tp.playerID from Pitching as tp group by tp.playerID having SHO >0
         ) as tmpp
     )
 );
