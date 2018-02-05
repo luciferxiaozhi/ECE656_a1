@@ -61,9 +61,10 @@ update Employee as e
     set salary = salary * 1.10
     where exists 
     (
-        select * from Assigned as a
+        select * from Assigned as a inner join Project as p
         where a.empID = e.empID
-        and a.role = 'Programmer'
+        and a.projID = p.projID
+        and p.title = 'compiler'
     );
 /* Part1.3.(b) tick*/
 update Employee, Department
